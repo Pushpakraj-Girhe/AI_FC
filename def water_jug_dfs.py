@@ -1,6 +1,9 @@
 def water_jug_dfs(jug1, jug2, target, visited=set()):
+    print(f"Current state: ({jug1}, {jug2})")
+    
     if (jug1, jug2) in visited:
         return False
+    
     if jug1 == target or jug2 == target:
         print(f"Solution found: ({jug1}, {jug2})")
         return True

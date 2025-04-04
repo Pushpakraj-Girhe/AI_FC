@@ -1,0 +1,33 @@
+import heapq
+
+def best_first_search_8puzzle(start, goal):
+    priority_queue = [(0, start, [])]
+    visited = set()
+    moves = {0: [1, 3], 1: [0, 2, 4], 2: [1, 5], 3: [0, 4, 6], 4: [1, 3, 5, 7], 5: [2, 4, 8], 6: [3, 7], 7: [4, 6, 8], 8: [5, 7]}
+    
+    while priority_queue:
+        _, state, path = heapq.heappop(priority_queue)
+        print(f"Step: {state}")
+        
+        if state == goal:
+            print("Solution found!")
+            return path + [state]
+        
+        visited.add(tuple(state))
+        zero_index = state.index(0)
+        
+        for move in moves[zero_index]:
+            new_state = state[:]
+            new_state[zero_index], new_state[move] = new_state[move], new_state[zero_index]
+            
+            if tuple(new_state) not in visited:
+                heapq.heappush(priority_queue, (0, new_state, path + [state]))
+    
+    print("No solution found!")
+    return None
+
+# Example usage
+start_state = [1, 2, 3, 4, 0, 5, 6, 7, 8]
+goal_state = [1, 2, 3, 4, 5, 6, 7, 8, 0]
+print("Solving 8-Puzzle using Best First Search:")
+best_first_search_8puzzle(start_state, goal_state)

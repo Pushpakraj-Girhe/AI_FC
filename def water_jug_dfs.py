@@ -57,3 +57,55 @@ jug2_capacity = 3
 target = 2
 print("Solving Water Jug Problem using DFS:")
 water_jug_dfs(0, 0, target)
+
+
+===================ByBFS========================
+from collections import deque
+
+def water_jug_bfs(jug1_capacity, jug2_capacity, target):
+    visited = set()
+    queue = deque()
+
+    # Initial state
+    queue.append((0, 0))  # (jug1, jug2)
+
+    while queue:
+        jug1, jug2 = queue.popleft()
+        print(f"Current state: ({jug1}, {jug2})")
+
+        # If target is reached
+        if jug1 == target or jug2 == target:
+            print(f"Solution found: ({jug1}, {jug2})")
+            return True
+
+        if (jug1, jug2) in visited:
+            continue
+
+        visited.add((jug1, jug2))
+
+        # All possible next states
+        next_states = [
+            (jug1_capacity, jug2),  # Fill Jug1
+            (jug1, jug2_capacity),  # Fill Jug2
+            (0, jug2),              # Empty Jug1
+            (jug1, 0),              # Empty Jug2
+            # Pour Jug1 -> Jug2
+            (jug1 - min(jug1, jug2_capacity - jug2), jug2 + min(jug1, jug2_capacity - jug2)),
+            # Pour Jug2 -> Jug1
+            (jug1 + min(jug2, jug1_capacity - jug1), jug2 - min(jug2, jug1_capacity - jug1)),
+        ]
+
+        for state in next_states:
+            if state not in visited:
+                queue.append(state)
+
+    print("No solution found.")
+    return False
+
+# Example usage
+jug1_capacity = 4
+jug2_capacity = 3
+target = 2
+print("Solving Water Jug Problem using BFS:")
+water_jug_bfs(jug1_capacity, jug2_capacity, target)
+
